@@ -45,81 +45,25 @@ plot(sigma_mat(1:halfN));
 hold on; plot(sigma_mat(1:halfN)./epsilon_mat(1:halfN))
 
 %% Return Cycle
-n =(length(epsilon_mat)+1); 
-t =t_mat(n); 
-epsilon_current = epsilon_mat(end);
-epsilon_dot_current= epsilon_dot_mat(end);
-k_current =     k_interp(epsilon_current);
-eta_current = eta_interp(epsilon_current);
-%eta_dt = eta_current *
-DecayT = eta_current./k_current;
-
-epsilon_new = epsilon_current*exp(-dt/DecayT);
-epsilon_dot_new = (epsilon_new -epsilon_current)/dt;
-
-    while (epsilon_dot_new < epsilon_dot_old )
-        epsilon_mat(end+1) = epsilon_mat(end) + dt*epsilon_dot_old;
-        sigma_mat(end+1) = k_current*epsilon_mat(end)+ ...
-            eta_current*epsilon_dot_old;
-        epsilon_dot_mat(end+1) = epsilon_dot_old;
-
-        n =(length(epsilon_mat)+1); 
-
-        t =t_mat(n); 
-        epsilon_current = epsilon_mat(end);
-        epsilon_dot_current= epsilon_dot_mat(end);
-        k_current =     k_interp(epsilon_current);
-        eta_current = eta_interp(epsilon_current);
-        %eta_dt = eta_current *
-        DecayT = eta_current./k_current;
-
-        epsilon_new = epsilon_current*exp(-dt/DecayT);
-        epsilon_dot_new = (epsilon_new -epsilon_current)/dt;
-
-end
-%% Return cycle second half
-
-n =(length(epsilon_mat)+1); 
-t =t_mat(n); 
-epsilon_current = epsilon_mat(end);
-epsilon_dot_current= epsilon_dot_mat(end);
-k_current =     k_interp(epsilon_current);
-eta_current = eta_interp(epsilon_current);
-%eta_dt = eta_current *
-DecayT = eta_current./k_current;
-
-epsilon_new = 0.1*exp(-dt/DecayT);
-epsilon_dot_new = (epsilon_new -epsilon_current)/dt;
-
-
-
-
-
-%% Plotting
-close all
-em=transpose(epsilon_mat(1:end-1));
-sm=smooth(sigma_mat,1);
-plot(em,sm)
-
-title('Forward and return cycle')
-xlabel('x')
-ylabel('F')
-
-
-
-%% plotting second half return cycle
-%plot(em(halfN:end))
-
-
-plot(em(1:halfN),smooth(sm(1:halfN),1000))
-hold on
-plot(em(halfN:end),smooth(sm(halfN:end),10))
-
-
+tMat2 = [];
+t2= 0;
 %%
-sm2=sm(5001:end)
-em2=em(5001:end);
-sm3(1:10)=linspace(0.699,0.3,10)
-em3=[0.1*ones(10,1); em2];
-sm4 = [sm3;  zeros(100,1)];
-em4 = [em3;  linspace(em3(end),0,100)'];
+for i = 1: 10000
+epsilon0 = epsilon_mat(end);
+
+eta_current = eta_interp(epsilon0);
+k_current = k_interp(epsilon0);
+DecayT = eta_current./k_current;
+
+epsilon_relax = epsilon0*exp(-dt/DecayT);
+
+epsilon_dot_relax = epsilon_relax-epsilon_mat(end);
+
+sigma_relax=   k_current.*epsilon_relax...
+        + eta_current.*epsilon_dot_relax;
+epsilon_mat(end+1) = epsilon_relax;
+sigma_mat(end+1) = sigma_relax;
+epsilon_dot_mat(end+1) = epsilon_dot_relax;
+t2 = t2+dt;
+tMat2(end+1) = t2;
+end

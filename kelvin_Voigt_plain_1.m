@@ -45,8 +45,7 @@ plot(sigma_mat(1:halfN));
 hold on; plot(sigma_mat(1:halfN)./epsilon_mat(1:halfN))
 
 %% Return Cycle
-n =(length ...
-    (epsilon_mat)+1); 
+n =(length(epsilon_mat)+1); 
 t =t_mat(n); 
 epsilon_current = epsilon_mat(end);
 epsilon_dot_current= epsilon_dot_mat(end);

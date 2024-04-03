@@ -6,7 +6,7 @@ k = 50000;  % Elastic modulus in Pa
 eta = 10000; % Viscosity in Pa.s
 
 % Time parameters
-dt = 1e-3; % Time step in seconds
+dt = 1e-1; % Time step in seconds
 t_mat = 0:dt:10; % Total time for simulation in seconds
 
 % Total number of time steps
@@ -67,3 +67,6 @@ epsilon_dot_mat(end+1) = epsilon_dot_relax;
 t2 = t2+dt;
 tMat2(end+1) = t2;
 end
+
+%%
+plot(epsilon_mat(2:end),sigma_mat)

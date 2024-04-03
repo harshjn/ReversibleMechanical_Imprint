@@ -48,7 +48,7 @@ hold on; plot(sigma_mat(1:halfN)./epsilon_mat(1:halfN))
 tMat2 = [];
 t2= 0;
 %%
-for i = 1: 10000
+for i = 1: 200
 epsilon0 = epsilon_mat(end);
 
 eta_current = eta_interp(epsilon0);

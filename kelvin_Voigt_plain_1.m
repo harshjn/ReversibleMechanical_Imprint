@@ -22,7 +22,7 @@ epsilon_mat = linspace(0,maxStrain,halfN+1); % Strain
 
 epsilon_dot_mat = diff(epsilon_mat(1:halfN+1))/dt; % Strain rate
 %epsilon_dot_mat(end+1) =0;
-epsilon_dot_old = -1*(epsilon_dot_mat(end));
+
 epsilon_dot_mat(end+1) = -1*epsilon_dot_old;
 %%
 k_mat = k*epsilon_mat(1:halfN).^2;          % Corresponding values of k

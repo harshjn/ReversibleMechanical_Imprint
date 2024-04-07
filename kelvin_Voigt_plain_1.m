@@ -12,7 +12,7 @@ t_mat = 0:dt:10; % Total time for simulation in seconds
 % Total number of time steps
 N = length(t_mat);
 
-% Applied strain: Increasing linearly for the first half. In second half, we will set stress to zero instantaneously
+% Applied strain: Increasing linearly for the first half. Second half: Applied stress set to zero, exponential decay in strain
 halfN = round(N/2)-1;
 %%
 

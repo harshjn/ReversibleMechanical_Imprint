@@ -16,10 +16,12 @@ N = length(t_mat);
 halfN = round(N/2)-1;
 %%
 
-maxStrain=0.1
+maxStrain=0.1;
 epsilon_mat = linspace(0,maxStrain,halfN+1); % Strain
+%epsilon_mat(end+1) = epsilon_mat(halfN);
 
 epsilon_dot_mat = diff(epsilon_mat(1:halfN+1))/dt; % Strain rate
+%epsilon_dot_mat(end+1) =0;
 
 %%
 k_mat = k*epsilon_mat(1:halfN).^2;          % Corresponding values of k
@@ -66,4 +68,4 @@ tMat2(end+1) = t2;
 end
 
 %%
-plot(epsilon_mat(2:end),sigma_mat)
+plot(epsilon_mat(2:end),sigma_mat,'o')

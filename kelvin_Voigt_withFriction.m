@@ -2,8 +2,8 @@ clc
 clear all
 close all
 % Parameters for the Kelvin-Voigt model
-k = 50000;   % Elastic modulus in Pa
-eta = 20000; % Viscosity in Pa.s
+k = 2*50000;   % Elastic modulus in Pa
+eta = 10000; % Viscosity in Pa.s
 
 % Time parameters
 dt = 1e-1; % Time step in seconds
@@ -27,7 +27,7 @@ epsilon_dot_mat(end+1) = -1*epsilon_dot_old;
 %%
 k_mat = k*epsilon_mat(1:halfN).^2;          % Corresponding values of k
 eta_mat=eta*epsilon_mat(1:halfN);
-fric_mat = 90000.*epsilon_mat(1:halfN).^2;
+fric_mat = 4000.*epsilon_mat(1:halfN).^2;
 
 
 % Create an interpolation functions
@@ -42,7 +42,7 @@ sigma_mat = zeros(1,halfN);
 close all
 sigma_mat(1:halfN)=k_mat.*epsilon_mat(1:halfN)...
         + eta_mat.*epsilon_dot_mat(1:halfN)...
-        -fric_mat.*epsilon_dot_mat(1:halfN);
+        +fric_mat;
 
 plot(epsilon_mat(1:halfN),sigma_mat(1:halfN));
 hold on; plot(epsilon_mat(1:halfN),sigma_mat(1:halfN)./epsilon_mat(1:halfN))
@@ -57,7 +57,7 @@ epsilon0 = epsilon_mat(end);
 eta_current  = eta_interp(epsilon0);
 k_current    = k_interp(epsilon0);
 fric_current = fric_interp(epsilon0);
-DecayT = eta_current./(k_current+fric_current);
+DecayT = (eta_current)./(k_current-fric_current/epsilon0);
 
 epsilon_relax = epsilon0*exp(-dt/DecayT);
 
@@ -65,7 +65,7 @@ epsilon_dot_relax = epsilon_relax-epsilon_mat(end);
 
 sigma_relax   =   k_current.*epsilon_relax...
                 + eta_current.*epsilon_dot_relax...
-                + fric_current.*epsilon_dot_relax;
+                - fric_current;
 epsilon_mat(end+1) = epsilon_relax;
 sigma_mat(end+1) = sigma_relax;
 epsilon_dot_mat(end+1) = epsilon_dot_relax;
@@ -73,5 +73,6 @@ t2 = t2+dt;
 tMat2(end+1) = t2;
 end
 
+plot(epsilon_mat)
 %%
 plot(epsilon_mat(2:end),sigma_mat,'o--')
